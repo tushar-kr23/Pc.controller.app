@@ -99,7 +99,7 @@ fun ControllerScreen(
                 )
             }
 
-            // CENTER
+            // CENTER SIDE
             Box(
                 modifier = Modifier
                     .weight(0.7f)
@@ -149,6 +149,7 @@ fun ControllerScreen(
                     .weight(1f)
                     .fillMaxHeight()
             ) {
+                // RT + RB
                 Row(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -167,11 +168,14 @@ fun ControllerScreen(
                     )
                 }
 
-                // FACE BUTTONS: fixed-size diamond layout
+                // A / B / X / Y - MOVED UP
                 Box(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
-                        .padding(top = 105.dp, end = 35.dp)
+                        .padding(
+                            top = 65.dp,
+                            end = 35.dp
+                        )
                         .size(174.dp)
                 ) {
                     ControllerButton(
@@ -180,18 +184,21 @@ fun ControllerScreen(
                         onPressed = { Log.d(TAG, "Y pressed") },
                         onReleased = { Log.d(TAG, "Y released") }
                     )
+
                     ControllerButton(
                         modifier = Modifier.align(Alignment.CenterStart),
                         text = "X",
                         onPressed = { Log.d(TAG, "X pressed") },
                         onReleased = { Log.d(TAG, "X released") }
                     )
+
                     ControllerButton(
                         modifier = Modifier.align(Alignment.CenterEnd),
                         text = "B",
                         onPressed = { Log.d(TAG, "B pressed") },
                         onReleased = { Log.d(TAG, "B released") }
                     )
+
                     ControllerButton(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         text = "A",
@@ -200,11 +207,14 @@ fun ControllerScreen(
                     )
                 }
 
-                // RIGHT JOYSTICK: below face buttons
+                // RIGHT JOYSTICK - STAYS AT BOTTOM
                 Joystick(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(end = 15.dp, bottom = 10.dp),
+                        .padding(
+                            end = 15.dp,
+                            bottom = 10.dp
+                        ),
                     onValueChanged = { x, y ->
                         rightStickX = x
                         rightStickY = y
