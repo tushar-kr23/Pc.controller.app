@@ -1,134 +1,51 @@
-package com.tushar.pccontroller.ui
 
-class InputMapper {
+package com.tushar.pccontroller.controller
 
-    private var state = ControllerState()
+object InputMapper {
 
-    fun getState(): ControllerState {
-        return state
+    fun button(
+        state: ControllerState,
+        name: String,
+        pressed: Boolean
+    ): ControllerState {
+        return when (name.uppercase()) {
+            "A" -> state.copy(a = pressed)
+            "B" -> state.copy(b = pressed)
+            "X" -> state.copy(x = pressed)
+            "Y" -> state.copy(y = pressed)
+            "LB" -> state.copy(lb = pressed)
+            "RB" -> state.copy(rb = pressed)
+            "LT" -> state.copy(lt = pressed)
+            "RT" -> state.copy(rt = pressed)
+            "VIEW" -> state.copy(view = pressed)
+            "MENU" -> state.copy(menu = pressed)
+            "DPAD_UP" -> state.copy(dpadUp = pressed)
+            "DPAD_DOWN" -> state.copy(dpadDown = pressed)
+            "DPAD_LEFT" -> state.copy(dpadLeft = pressed)
+            "DPAD_RIGHT" -> state.copy(dpadRight = pressed)
+            else -> state
+        }
     }
 
-    // ---------------------------------------------------------
-    // Face Buttons
-    // ---------------------------------------------------------
-
-    fun setA(pressed: Boolean) {
-        state = state.copy(a = pressed)
-    }
-
-    fun setB(pressed: Boolean) {
-        state = state.copy(b = pressed)
-    }
-
-    fun setX(pressed: Boolean) {
-        state = state.copy(x = pressed)
-    }
-
-    fun setY(pressed: Boolean) {
-        state = state.copy(y = pressed)
-    }
-
-    // ---------------------------------------------------------
-    // Shoulder Buttons
-    // ---------------------------------------------------------
-
-    fun setLB(pressed: Boolean) {
-        state = state.copy(lb = pressed)
-    }
-
-    fun setRB(pressed: Boolean) {
-        state = state.copy(rb = pressed)
-    }
-
-    // ---------------------------------------------------------
-    // Triggers
-    // ---------------------------------------------------------
-
-    fun setLT(value: Float) {
-        state = state.copy(
-            lt = value.coerceIn(0f, 1f)
-        )
-    }
-
-    fun setRT(value: Float) {
-        state = state.copy(
-            rt = value.coerceIn(0f, 1f)
-        )
-    }
-
-    // ---------------------------------------------------------
-    // Start / Select
-    // ---------------------------------------------------------
-
-    fun setStart(pressed: Boolean) {
-        state = state.copy(start = pressed)
-    }
-
-    fun setSelect(pressed: Boolean) {
-        state = state.copy(select = pressed)
-    }
-
-    // ---------------------------------------------------------
-    // D-Pad
-    // ---------------------------------------------------------
-
-    fun setUp(pressed: Boolean) {
-        state = state.copy(up = pressed)
-    }
-
-    fun setDown(pressed: Boolean) {
-        state = state.copy(down = pressed)
-    }
-
-    fun setLeft(pressed: Boolean) {
-        state = state.copy(left = pressed)
-    }
-
-    fun setRight(pressed: Boolean) {
-        state = state.copy(right = pressed)
-    }
-
-    // ---------------------------------------------------------
-    // Left Joystick
-    // ---------------------------------------------------------
-
-    fun setLeftStick(x: Float, y: Float) {
-        state = state.copy(
+    fun leftStick(
+        state: ControllerState,
+        x: Float,
+        y: Float
+    ): ControllerState {
+        return state.copy(
             leftStickX = x.coerceIn(-1f, 1f),
             leftStickY = y.coerceIn(-1f, 1f)
         )
     }
 
-    fun resetLeftStick() {
-        state = state.copy(
-            leftStickX = 0f,
-            leftStickY = 0f
-        )
-    }
-
-    // ---------------------------------------------------------
-    // Right Joystick
-    // ---------------------------------------------------------
-
-    fun setRightStick(x: Float, y: Float) {
-        state = state.copy(
+    fun rightStick(
+        state: ControllerState,
+        x: Float,
+        y: Float
+    ): ControllerState {
+        return state.copy(
             rightStickX = x.coerceIn(-1f, 1f),
             rightStickY = y.coerceIn(-1f, 1f)
         )
-    }
-
-    fun resetRightStick() {
-        state = state.copy(
-            rightStickX = 0f,
-            rightStickY = 0f
-        )
-    }
-
-    // ---------------------------------------------------------
-    // Reset Everything
-    // ---------------------------------------------------------
-
-    fun reset() {
-        state = ControllerState()
     }
 }
