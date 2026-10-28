@@ -33,7 +33,6 @@ fun ControllerScreen(
 ) {
     var leftStickX by remember { mutableFloatStateOf(0f) }
     var leftStickY by remember { mutableFloatStateOf(0f) }
-
     var rightStickX by remember { mutableFloatStateOf(0f) }
     var rightStickY by remember { mutableFloatStateOf(0f) }
 
@@ -41,10 +40,7 @@ fun ControllerScreen(
         modifier = modifier
             .fillMaxSize()
             .background(Color(0xFF0B0B0F))
-            .padding(
-                horizontal = 20.dp,
-                vertical = 14.dp
-            )
+            .padding(horizontal = 20.dp, vertical = 14.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxSize(),
@@ -53,15 +49,11 @@ fun ControllerScreen(
         ) {
 
             // LEFT SIDE
-
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-
-                // LT + LB
-
                 Row(
                     modifier = Modifier
                         .align(Alignment.TopStart)
@@ -73,15 +65,12 @@ fun ControllerScreen(
                         onPressed = { Log.d(TAG, "LT pressed") },
                         onReleased = { Log.d(TAG, "LT released") }
                     )
-
                     ControllerButton(
                         text = "LB",
                         onPressed = { Log.d(TAG, "LB pressed") },
                         onReleased = { Log.d(TAG, "LB released") }
                     )
                 }
-
-                // D-PAD
 
                 DPad(
                     modifier = Modifier
@@ -93,30 +82,24 @@ fun ControllerScreen(
                     onRight = { Log.d(TAG, "DPad RIGHT") }
                 )
 
-                // LEFT JOYSTICK
-
                 Joystick(
                     modifier = Modifier
                         .align(Alignment.BottomStart)
-                        .padding(
-                            start = 15.dp,
-                            bottom = 10.dp
-                        ),
+                        .padding(start = 15.dp, bottom = 10.dp),
                     onValueChanged = { x, y ->
                         leftStickX = x
                         leftStickY = y
-                        Log.d(TAG, "Left Joystick -> X=$x Y=$y")
+                        Log.d(TAG, "Left joystick: X=$x Y=$y")
                     },
                     onReleased = {
                         leftStickX = 0f
                         leftStickY = 0f
-                        Log.d(TAG, "Left Joystick released")
+                        Log.d(TAG, "Left joystick released")
                     }
                 )
             }
 
             // CENTER
-
             Box(
                 modifier = Modifier
                     .weight(0.7f)
@@ -133,7 +116,6 @@ fun ControllerScreen(
                         onPressed = { Log.d(TAG, "VIEW pressed") },
                         onReleased = { Log.d(TAG, "VIEW released") }
                     )
-
                     ControllerButton(
                         text = "MENU",
                         buttonSize = 55.dp,
@@ -142,24 +124,19 @@ fun ControllerScreen(
                     )
                 }
 
-                // JOYSTICK VALUES
-
                 Column(
                     modifier = Modifier.align(Alignment.BottomCenter),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = "L  X: %.2f  Y: %.2f".format(
-                            leftStickX,
-                            leftStickY
+                            leftStickX, leftStickY
                         ),
                         color = Color(0xFF777777)
                     )
-
                     Text(
                         text = "R  X: %.2f  Y: %.2f".format(
-                            rightStickX,
-                            rightStickY
+                            rightStickX, rightStickY
                         ),
                         color = Color(0xFF777777)
                     )
@@ -167,15 +144,11 @@ fun ControllerScreen(
             }
 
             // RIGHT SIDE
-
             Box(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-
-                // RT + RB
-
                 Row(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
@@ -187,7 +160,6 @@ fun ControllerScreen(
                         onPressed = { Log.d(TAG, "RT pressed") },
                         onReleased = { Log.d(TAG, "RT released") }
                     )
-
                     ControllerButton(
                         text = "RB",
                         onPressed = { Log.d(TAG, "RB pressed") },
@@ -195,12 +167,11 @@ fun ControllerScreen(
                     )
                 }
 
-                // A / B / X / Y BUTTONS
-
+                // FACE BUTTONS: fixed-size diamond layout
                 Box(
                     modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .padding(end = 20.dp)
+                        .align(Alignment.TopEnd)
+                        .padding(top = 105.dp, end = 35.dp)
                         .size(174.dp)
                 ) {
                     ControllerButton(
@@ -209,21 +180,18 @@ fun ControllerScreen(
                         onPressed = { Log.d(TAG, "Y pressed") },
                         onReleased = { Log.d(TAG, "Y released") }
                     )
-
                     ControllerButton(
                         modifier = Modifier.align(Alignment.CenterStart),
                         text = "X",
                         onPressed = { Log.d(TAG, "X pressed") },
                         onReleased = { Log.d(TAG, "X released") }
                     )
-
                     ControllerButton(
                         modifier = Modifier.align(Alignment.CenterEnd),
                         text = "B",
                         onPressed = { Log.d(TAG, "B pressed") },
                         onReleased = { Log.d(TAG, "B released") }
                     )
-
                     ControllerButton(
                         modifier = Modifier.align(Alignment.BottomCenter),
                         text = "A",
@@ -232,24 +200,20 @@ fun ControllerScreen(
                     )
                 }
 
-                // RIGHT JOYSTICK
-
+                // RIGHT JOYSTICK: below face buttons
                 Joystick(
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(
-                            end = 15.dp,
-                            bottom = 10.dp
-                        ),
+                        .padding(end = 15.dp, bottom = 10.dp),
                     onValueChanged = { x, y ->
                         rightStickX = x
                         rightStickY = y
-                        Log.d(TAG, "Right Joystick -> X=$x Y=$y")
+                        Log.d(TAG, "Right joystick: X=$x Y=$y")
                     },
                     onReleased = {
                         rightStickX = 0f
                         rightStickY = 0f
-                        Log.d(TAG, "Right Joystick released")
+                        Log.d(TAG, "Right joystick released")
                     }
                 )
             }
