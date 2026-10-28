@@ -1,3 +1,4 @@
+
 package com.tushar.pccontroller.ui
 
 import android.util.Log
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,16 +46,13 @@ fun ControllerScreen(
                 vertical = 14.dp
             )
     ) {
-
         Row(
             modifier = Modifier.fillMaxSize(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // ==========================================
             // LEFT SIDE
-            // ==========================================
 
             Box(
                 modifier = Modifier
@@ -69,27 +68,16 @@ fun ControllerScreen(
                         .padding(start = 8.dp),
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-
                     ControllerButton(
                         text = "LT",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "LT pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "LT released")
-                        }
+                        onPressed = { Log.d(TAG, "LT pressed") },
+                        onReleased = { Log.d(TAG, "LT released") }
                     )
 
                     ControllerButton(
                         text = "LB",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "LB pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "LB released")
-                        }
+                        onPressed = { Log.d(TAG, "LB pressed") },
+                        onReleased = { Log.d(TAG, "LB released") }
                     )
                 }
 
@@ -99,18 +87,10 @@ fun ControllerScreen(
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(start = 15.dp),
-                    onUp = {
-                        Log.d(TAG, "DPad UP")
-                    },
-                    onDown = {
-                        Log.d(TAG, "DPad DOWN")
-                    },
-                    onLeft = {
-                        Log.d(TAG, "DPad LEFT")
-                    },
-                    onRight = {
-                        Log.d(TAG, "DPad RIGHT")
-                    }
+                    onUp = { Log.d(TAG, "DPad UP") },
+                    onDown = { Log.d(TAG, "DPad DOWN") },
+                    onLeft = { Log.d(TAG, "DPad LEFT") },
+                    onRight = { Log.d(TAG, "DPad RIGHT") }
                 )
 
                 // LEFT JOYSTICK
@@ -123,31 +103,19 @@ fun ControllerScreen(
                             bottom = 10.dp
                         ),
                     onValueChanged = { x, y ->
-
                         leftStickX = x
                         leftStickY = y
-
-                        Log.d(
-                            TAG,
-                            "Left Joystick -> X=$x Y=$y"
-                        )
+                        Log.d(TAG, "Left Joystick -> X=$x Y=$y")
                     },
                     onReleased = {
-
                         leftStickX = 0f
                         leftStickY = 0f
-
-                        Log.d(
-                            TAG,
-                            "Left Joystick released"
-                        )
+                        Log.d(TAG, "Left Joystick released")
                     }
                 )
             }
 
-            // ==========================================
             // CENTER
-            // ==========================================
 
             Box(
                 modifier = Modifier
@@ -155,71 +123,50 @@ fun ControllerScreen(
                     .fillMaxHeight(),
                 contentAlignment = Alignment.Center
             ) {
-
                 Row(
-                    horizontalArrangement =
-                        Arrangement.spacedBy(18.dp),
-                    verticalAlignment =
-                        Alignment.CenterVertically
+                    horizontalArrangement = Arrangement.spacedBy(18.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-
                     ControllerButton(
                         text = "VIEW",
-                        buttonColor = Color(0xFFE53935),
                         buttonSize = 55.dp,
-                        onPressed = {
-                            Log.d(TAG, "VIEW pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "VIEW released")
-                        }
+                        onPressed = { Log.d(TAG, "VIEW pressed") },
+                        onReleased = { Log.d(TAG, "VIEW released") }
                     )
 
                     ControllerButton(
                         text = "MENU",
-                        buttonColor = Color(0xFFE53935),
                         buttonSize = 55.dp,
-                        onPressed = {
-                            Log.d(TAG, "MENU pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "MENU released")
-                        }
+                        onPressed = { Log.d(TAG, "MENU pressed") },
+                        onReleased = { Log.d(TAG, "MENU released") }
                     )
                 }
 
-                // Joystick values
+                // JOYSTICK VALUES
 
                 Column(
-                    modifier = Modifier
-                        .align(Alignment.BottomCenter),
-                    horizontalAlignment =
-                        Alignment.CenterHorizontally
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-
                     Text(
-                        text = "L  X: %.2f  Y: %.2f"
-                            .format(
-                                leftStickX,
-                                leftStickY
-                            ),
+                        text = "L  X: %.2f  Y: %.2f".format(
+                            leftStickX,
+                            leftStickY
+                        ),
                         color = Color(0xFF777777)
                     )
 
                     Text(
-                        text = "R  X: %.2f  Y: %.2f"
-                            .format(
-                                rightStickX,
-                                rightStickY
-                            ),
+                        text = "R  X: %.2f  Y: %.2f".format(
+                            rightStickX,
+                            rightStickY
+                        ),
                         color = Color(0xFF777777)
                     )
                 }
             }
 
-            // ==========================================
             // RIGHT SIDE
-            // ==========================================
 
             Box(
                 modifier = Modifier
@@ -233,93 +180,55 @@ fun ControllerScreen(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                         .padding(end = 8.dp),
-                    horizontalArrangement =
-                        Arrangement.spacedBy(10.dp)
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-
                     ControllerButton(
                         text = "RT",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "RT pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "RT released")
-                        }
+                        onPressed = { Log.d(TAG, "RT pressed") },
+                        onReleased = { Log.d(TAG, "RT released") }
                     )
 
                     ControllerButton(
                         text = "RB",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "RB pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "RB released")
-                        }
+                        onPressed = { Log.d(TAG, "RB pressed") },
+                        onReleased = { Log.d(TAG, "RB released") }
                     )
                 }
 
-                // ======================================
-                // A B X Y
-                // ======================================
+                // A / B / X / Y BUTTONS
 
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterEnd)
                         .padding(end = 20.dp)
+                        .size(174.dp)
                 ) {
-
                     ControllerButton(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter),
+                        modifier = Modifier.align(Alignment.TopCenter),
                         text = "Y",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "Y pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "Y released")
-                        }
+                        onPressed = { Log.d(TAG, "Y pressed") },
+                        onReleased = { Log.d(TAG, "Y released") }
                     )
 
                     ControllerButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterStart),
+                        modifier = Modifier.align(Alignment.CenterStart),
                         text = "X",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "X pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "X released")
-                        }
+                        onPressed = { Log.d(TAG, "X pressed") },
+                        onReleased = { Log.d(TAG, "X released") }
                     )
 
                     ControllerButton(
-                        modifier = Modifier
-                            .align(Alignment.CenterEnd),
+                        modifier = Modifier.align(Alignment.CenterEnd),
                         text = "B",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "B pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "B released")
-                        }
+                        onPressed = { Log.d(TAG, "B pressed") },
+                        onReleased = { Log.d(TAG, "B released") }
                     )
 
                     ControllerButton(
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter),
+                        modifier = Modifier.align(Alignment.BottomCenter),
                         text = "A",
-                        buttonColor = Color(0xFFE53935),
-                        onPressed = {
-                            Log.d(TAG, "A pressed")
-                        },
-                        onReleased = {
-                            Log.d(TAG, "A released")
-                        }
+                        onPressed = { Log.d(TAG, "A pressed") },
+                        onReleased = { Log.d(TAG, "A released") }
                     )
                 }
 
@@ -333,24 +242,14 @@ fun ControllerScreen(
                             bottom = 10.dp
                         ),
                     onValueChanged = { x, y ->
-
                         rightStickX = x
                         rightStickY = y
-
-                        Log.d(
-                            TAG,
-                            "Right Joystick -> X=$x Y=$y"
-                        )
+                        Log.d(TAG, "Right Joystick -> X=$x Y=$y")
                     },
                     onReleased = {
-
                         rightStickX = 0f
                         rightStickY = 0f
-
-                        Log.d(
-                            TAG,
-                            "Right Joystick released"
-                        )
+                        Log.d(TAG, "Right Joystick released")
                     }
                 )
             }
