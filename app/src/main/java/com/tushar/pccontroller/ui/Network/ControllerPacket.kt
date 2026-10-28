@@ -1,3 +1,4 @@
+
 package com.tushar.pccontroller
 
 import java.nio.ByteBuffer
@@ -6,7 +7,6 @@ import java.nio.ByteOrder
 data class ControllerPacket(
     val leftStickX: Float = 0f,
     val leftStickY: Float = 0f,
-
     val rightStickX: Float = 0f,
     val rightStickY: Float = 0f,
 
@@ -34,155 +34,84 @@ data class ControllerPacket(
 
     val timestamp: Long = System.currentTimeMillis()
 ) {
+    fun toByteArray(): ByteArray {
+        var mask = 0
+
+        val buttons = listOf(
+            up, down, left, right,
+            a, b, x, y,
+            lb, rb, start, select
+        )
+
+        buttons.forEachIndexed { index, pressed ->
+            if (pressed) mask = mask or (1 shl index)
+        }
+
+        return ByteBuffer.allocate(PACKET_SIZE)
+            .order(ByteOrder.LITTLE_ENDIAN)
+            .putLong(timestamp)
+            .putFloat(leftStickX.coerceIn(-1f, 1f))
+            .putFloat(leftStickY.coerceIn(-1f, 1f))
+            .putFloat(rightStickX.coerceIn(-1f, 1f))
+            .putFloat(rightStickY.coerceIn(-1f, 1f))
+            .putInt(mask)
+            .putFloat(lt.coerceIn(0f, 1f))
+            .putFloat(rt.coerceIn(0f, 1f))
+            .putFloat(gyroX)
+            .putFloat(gyroY)
+            .array()
+    }
 
     companion object {
+        const val PACKET_SIZE = 44
 
-        const val PACKET_SIZE = 54
-
-        private const val UP = 0
-        private const val DOWN = 1
-        private const val LEFT = 2
-        private const val RIGHT = 3
-
-        private const val A = 4
-        private const val B = 5
-        private const val X = 6
-        private const val Y = 7
-
-        private const val LB = 8
-        private const val RB = 9
-
-        private const val START = 10
-        private const val SELECT = 11
-
-        private fun setBit(
-            mask: Int,
-            bit: Int,
-            value: Boolean
-        ): Int {
-            return if (value) {
-                mask or (1 shl bit)
-            } else {
-                mask
-            }
-        }
-
-        private fun hasBit(
-            mask: Int,
-            bit: Int
-        ): Boolean {
-            return (mask and (1 shl bit)) != 0
-        }
-
-        fun fromByteArray(
-            data: ByteArray
-        ): ControllerPacket? {
-
-            if (data.size < PACKET_SIZE) {
-                return null
-            }
+        fun fromByteArray(data: ByteArray): ControllerPacket? {
+            if (data.size < PACKET_SIZE) return null
 
             return try {
-
-                val buffer = ByteBuffer
-                    .wrap(data)
+                val buffer = ByteBuffer.wrap(data)
                     .order(ByteOrder.LITTLE_ENDIAN)
 
                 val timestamp = buffer.long
+                val lx = buffer.float
+                val ly = buffer.float
+                val rx = buffer.float
+                val ry = buffer.float
+                val mask = buffer.int
+                val lt = buffer.float.coerceIn(0f, 1f)
+                val rt = buffer.float.coerceIn(0f, 1f)
+                val gx = buffer.float
+                val gy = buffer.float
 
-                val leftStickX = buffer.float
-                val leftStickY = buffer.float
-
-                val rightStickX = buffer.float
-                val rightStickY = buffer.float
-
-                val buttonMask =
-                    buffer.int
-
-                val lt = buffer.float
-                val rt = buffer.float
-
-                val gyroX = buffer.float
-                val gyroY = buffer.float
+                fun pressed(bit: Int) =
+                    (mask and (1 shl bit)) != 0
 
                 ControllerPacket(
-                    leftStickX = leftStickX,
-                    leftStickY = leftStickY,
-
-                    rightStickX = rightStickX,
-                    rightStickY = rightStickY,
-
-                    up = hasBit(buttonMask, UP),
-                    down = hasBit(buttonMask, DOWN),
-                    left = hasBit(buttonMask, LEFT),
-                    right = hasBit(buttonMask, RIGHT),
-
-                    a = hasBit(buttonMask, A),
-                    b = hasBit(buttonMask, B),
-                    x = hasBit(buttonMask, X),
-                    y = hasBit(buttonMask, Y),
-
-                    lb = hasBit(buttonMask, LB),
-                    rb = hasBit(buttonMask, RB),
-
-                    lt = lt.coerceIn(0f, 1f),
-                    rt = rt.coerceIn(0f, 1f),
-
-                    start = hasBit(buttonMask, START),
-                    select = hasBit(buttonMask, SELECT),
-
-                    gyroX = gyroX,
-                    gyroY = gyroY,
-
+                    leftStickX = lx,
+                    leftStickY = ly,
+                    rightStickX = rx,
+                    rightStickY = ry,
+                    up = pressed(0),
+                    down = pressed(1),
+                    left = pressed(2),
+                    right = pressed(3),
+                    a = pressed(4),
+                    b = pressed(5),
+                    x = pressed(6),
+                    y = pressed(7),
+                    lb = pressed(8),
+                    rb = pressed(9),
+                    start = pressed(10),
+                    select = pressed(11),
+                    lt = lt,
+                    rt = rt,
+                    gyroX = gx,
+                    gyroY = gy,
                     timestamp = timestamp
                 )
-
             } catch (_: Exception) {
                 null
             }
         }
-    }
-
-    fun toByteArray(): ByteArray {
-
-        var buttonMask = 0
-
-        buttonMask = setBit(buttonMask, UP, up)
-        buttonMask = setBit(buttonMask, DOWN, down)
-        buttonMask = setBit(buttonMask, LEFT, left)
-        buttonMask = setBit(buttonMask, RIGHT, right)
-
-        buttonMask = setBit(buttonMask, A, a)
-        buttonMask = setBit(buttonMask, B, b)
-        buttonMask = setBit(buttonMask, X, x)
-        buttonMask = setBit(buttonMask, Y, y)
-
-        buttonMask = setBit(buttonMask, LB, lb)
-        buttonMask = setBit(buttonMask, RB, rb)
-
-        buttonMask = setBit(buttonMask, START, start)
-        buttonMask = setBit(buttonMask, SELECT, select)
-
-        val buffer = ByteBuffer
-            .allocate(PACKET_SIZE)
-            .order(ByteOrder.LITTLE_ENDIAN)
-
-        buffer.putLong(timestamp)
-
-        buffer.putFloat(leftStickX)
-        buffer.putFloat(leftStickY)
-
-        buffer.putFloat(rightStickX)
-        buffer.putFloat(rightStickY)
-
-        buffer.putInt(buttonMask)
-
-        buffer.putFloat(lt)
-        buffer.putFloat(rt)
-
-        buffer.putFloat(gyroX)
-        buffer.putFloat(gyroY)
-
-        return buffer.array()
     }
 }
